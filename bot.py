@@ -1,7 +1,11 @@
 from telegram.ext import Updater,CommandHandler, CallbackContext, MessageHandler,Filters,CallbackQueryHandler
 from telegram import Update, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 import os 
+from flask import Flask
 TOKEN=os.environ['TOKEN']
+app=Flask(__name__)
+@app.route('/')
+
 def start(update: Update, context: CallbackContext):
     chat_id=update.message.chat.id 
     keyboar=ReplyKeyboardMarkup([
@@ -137,3 +141,7 @@ updater.dispatcher.add_handler(MessageHandler(Filters.text("Dictionary // Lug'at
 
 updater.start_polling()
 updater.idle()
+if __name__ == '__main__':
+    # Run the app in local network
+    app.run(host='0.0.0.0', port=8080,debug=True)
+# get remote 
