@@ -1,10 +1,9 @@
 from telegram.ext import Updater,CommandHandler, CallbackContext, MessageHandler,Filters,CallbackQueryHandler
 from telegram import Update, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 import os 
-from flask import Flask
+
 TOKEN=os.environ['TOKEN']
-app=Flask(__name__)
-@app.route('/')
+
 
 def start(update: Update, context: CallbackContext):
     chat_id=update.message.chat.id 
@@ -63,15 +62,8 @@ def Dictionary(update: Update, context=CallbackContext):
         [InlineKeyboardButton(text="bog'dagi mehnat anjomlari // gardening tools", callback_data='gardening tools')],
         [InlineKeyboardButton(text='tana azolari // body parts', callback_data='body parts')],
         [InlineKeyboardButton(text='yovvoyi hayvonlar //  wild animals', callback_data='wild animals')],
-        [InlineKeyboardButton(text='uy hayvonlari // domestic animals', callback_data='domestic animals')]
-
-    
-
-
-
-
-
-
+        [InlineKeyboardButton(text='uy hayvonlari // domestic animals', callback_data='domestic animals')],
+        [InlineKeyboardButton(text="o'simliklar // plants", callback_data='plants')]
 
     ])
     bot=context.bot
@@ -80,9 +72,25 @@ def Dictionary(update: Update, context=CallbackContext):
         text="Lug'atlar mavzular buyicha tuzib chiqilgan.",
         reply_markup=keyboar
     )
+def Music(update: Update, context:CallbackContext):
+    chat_id=update.message.chat.id
+    keyboar=InlineKeyboardMarkup([
+        [InlineKeyboardButton(text='1', callback_data='bir'), InlineKeyboardButton(text='2', callback_data='ikki'), InlineKeyboardButton(text='3',callback_data='uch'),InlineKeyboardButton(text='4', callback_data='turt'), InlineKeyboardButton(text='5', callback_data='besh')],
+        [InlineKeyboardButton(text='6',callback_data='olti'), InlineKeyboardButton(text='7', callback_data='yetti'), InlineKeyboardButton(text='8', callback_data='sakkiz'), InlineKeyboardButton(text='9', callback_data='tuqqiz'), InlineKeyboardButton(text='10', callback_data='un')]
+    ])
+    bot=context.bot
+    bot.sendMessage(
+        chat_id=chat_id,
+        text='🎵🎵🎸🎸🎧🎧🎹🎹',
+        reply_markup=keyboar
+    )
+
+
+
+
 def query(update: Update, context: CallbackContext):
     query=update.callback_query
-    chat_id=query.message.chat_id
+    chat_id=query.message.chat.id
     data=query.data
     bot=context.bot
   
@@ -121,6 +129,20 @@ def query(update: Update, context: CallbackContext):
         bot.sendPhoto(chat_id=chat_id, photo='https://i.pinimg.com/originals/6f/7a/1e/6f7a1e0b49e9b112aebcfba465882733.jpg')
     elif data=='domestic animals':
         bot.sendPhoto(chat_id=chat_id, photo='https://i.pinimg.com/736x/ca/2b/94/ca2b943d3b717d1f76936acf28cf61fc.jpg')
+    elif data=='plants':
+        bot.sendPhoto(chat_id=chat_id, photo='https://i.pinimg.com/originals/3e/b9/a3/3eb9a3965b1235e5ce157272292d018f.jpg')
+    elif data=='bir':
+        bot.sendAudio(chat_id=chat_id, audio=open('p79yd0rboozmxzl43u.m4a','rb'))
+    
+    
+    
+        
+
+
+
+
+
+
     query.answer('No')
 
  
@@ -137,11 +159,8 @@ updater.dispatcher.add_handler(MessageHandler(Filters.text('Grammar // grammatik
 updater.dispatcher.add_handler(MessageHandler(Filters.text('Documentation 📄'),Documentation))
 updater.dispatcher.add_handler(CallbackQueryHandler(query))
 updater.dispatcher.add_handler(MessageHandler(Filters.text("Dictionary // Lug'at"),Dictionary))
-
+updater.dispatcher.add_handler(MessageHandler(Filters.text('Music in English 🎧'),Music))
 
 updater.start_polling()
 updater.idle()
-if __name__ == '__main__':
-    # Run the app in local network
-    app.run(host='0.0.0.0', port=8080,debug=True)
-# get remote 
+
